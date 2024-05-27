@@ -10,5 +10,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
 
      path('update_item/', views.checkout, name='update_item'),
+     path('process_order/', views.processOrder, name='process_order'),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -13,7 +13,7 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     digital = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
@@ -39,15 +39,14 @@ class Order(models.Model):
         total = sum([item.get_total for item in order_items])
         return total
 
-
     @property
     def shipping(self):
         shipping = False
-        orderitems =self.orderitem_set.all()
+        orderitems = self.orderitem_set.all()
         for i in orderitems:
-            if i.product.digital == False:
+            if not i.product.digital:
                 shipping = True
-                return shipping
+        return shipping
 
     @property
     def get_cart_items(self):
