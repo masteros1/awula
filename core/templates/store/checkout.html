@@ -1,4 +1,6 @@
-{% extends 'store/main.html' %} {% load static %} {% block content %}
+{% extends "main.html" %}
+
+{% block content %}
 <div class="row">
   <div class="col-lg-6">
     <div class="box-element" id="form-wrapper">
@@ -67,19 +69,17 @@
           type="submit"
           value="Continue"
         />
+        <div class="box-element hidden" id="payment-info">
+          <small>Payment Information</small>
+          <button id="make-payment">Make payment</button>
+        </div>
       </form>
     </div>
     <br />
-    <div class="box-element hidden" id="payment-info">
-      <small>Payment Information</small>
-      <button id="make-payment">Make payment</button>
-    </div>
   </div>
   <div class="col-lg-6">
     <div class="box-element" id="form-wrapper">
-      <a class="btn btn-outline-dark" href="{% url 'cart' %}"
-        >&#x2190; Back to Cart</a
-      >
+      <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
       <hr />
       <h3>Order Summary</h3>
       <hr />
@@ -98,6 +98,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
 <script type="text/javascript">
   var shipping = "{{ order.shipping }}";
   var total = "{{ order.get_cart_total }}";
@@ -123,11 +125,9 @@
     document.getElementById("payment-info").classList.remove("hidden");
   });
 
-  document
-    .getElementById("make-payment")
-    .addEventListener("click", function (e) {
-      submitFormData();
-    });
+  document.getElementById("make-payment").addEventListener("click", function (e) {
+    submitFormData();
+  });
 
   function submitFormData() {
     console.log("Payment button clicked");
@@ -163,7 +163,7 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken, // Make sure csrftoken is defined
+        "X-CSRFToken": csrftoken,
       },
       body: JSON.stringify({ form: userFormData, shipping: shippingInfo }),
     })
@@ -173,10 +173,8 @@
         alert("Transaction completed");
 
         cart = {};
-        document.cookie = "carts=" + JSON.stringify(cart) + ";domian=;path=/";
+        document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
 
         window.location.href = "{% url 'store' %}";
       });
-  }
-</script>
-{% endblock content %}
+
